@@ -1,43 +1,21 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fase 1 💜</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Missão do Tesouro — Início</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- Biblioteca do scanner -->
   <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
   <script src="script.js" defer></script>
 </head>
 <body>
   <div class="container">
-    <img src="https://via.placeholder.com/400x250.png?text=Missão+do+Amor" alt="Fase 1" />
-    <h1>💜 Primeira Pista 💜</h1>
-    <p id="hint-text">Dica: use o botão abaixo para começar!</p>
-
-    <!-- Região do QR -->
-    <div id="qr-region" class="qr-box"></div>
-
-    <!-- Botões principais -->
-    <div class="buttons">
-      <button id="start-scan">📷 Escanear</button>
-      <button id="stop-scan" disabled>⏹ Parar</button>
-    </div>
-
-    <!-- Código manual -->
-    <div class="manual">
-      <input id="manual-code" placeholder="Digite o código manualmente 💌" />
-      <button id="manual-confirm">Confirmar</button>
-    </div>
-
-    <button id="next-btn" style="display:none;">➡️ Próximo</button>
-  </div>
-
-  <!-- Overlay -->
-  <div id="result-overlay" class="overlay">
-    <div class="overlay-box">
-      <div id="overlay-message"></div>
-      <button id="overlay-close">Fechar</button>
+    <img class="header-img" src="https://via.placeholder.com/800x300.png?text=Miss%C3%A3o+do+Tesouro" alt="Missão" />
+    <h1>Bem-vinda à Missão do Tesouro Misterioso</h1>
+    <p class="lead">Hoje é dia de aventura — siga as pistas, escaneie os QR Codes e encontre seu presente 🎁</p>
+    <p class="lead final-note">Quando estiver pronta, comece sua missão.</p>
+    <div style="margin-top:16px;">
+      <button class="btn" id="start-mission" onclick="window.location.href='fase2.html'">Começar Missão</button>
     </div>
   </div>
 </body>
