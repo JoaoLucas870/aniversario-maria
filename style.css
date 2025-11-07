@@ -2,22 +2,25 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #f4f4f9;
+  background: linear-gradient(135deg, #d6a2e8, #a66de1, #8146d1);
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   margin: 0;
+  color: #fff;
 }
 
 .container {
-  background-color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 20px;
   padding: 30px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.15);
   text-align: center;
   width: 90%;
   max-width: 400px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
   animation: fadeIn 0.8s ease;
 }
 
@@ -29,32 +32,100 @@ body {
 img {
   width: 100%;
   border-radius: 15px;
-  margin-bottom: 20px;
-}
-
-h1 {
-  color: #333;
-  font-size: 1.4rem;
   margin-bottom: 15px;
 }
 
+h1 {
+  font-size: 1.6rem;
+  color: #fff;
+  margin-bottom: 10px;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
 p {
-  color: #555;
   font-size: 1rem;
   margin-bottom: 20px;
 }
 
 button {
-  background-color: #4CAF50;
+  background: #b67df2;
   border: none;
-  color: white;
-  padding: 10px 25px;
+  color: #fff;
+  padding: 10px 22px;
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
   transition: 0.3s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 button:hover {
-  background-color: #3e8e41;
+  background: #c592f8;
+  transform: scale(1.05);
+}
+
+.qr-box {
+  width: 100%;
+  max-width: 300px;
+  height: 250px;
+  margin: 0 auto 15px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.manual input {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  width: 70%;
+  margin-right: 8px;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.manual button {
+  background: #a66de1;
+  font-weight: bold;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.overlay-box {
+  background: #fff;
+  color: #333;
+  padding: 25px;
+  border-radius: 15px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  animation: popIn 0.4s ease;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.overlay-box h2 {
+  color: #8146d1;
+}
+
+#overlay-close {
+  margin-top: 10px;
+  background: #8146d1;
+  color: #fff;
+}
+
+#overlay-close:hover {
+  background: #9b5fe8;
 }
