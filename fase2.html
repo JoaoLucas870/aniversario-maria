@@ -1,44 +1,133 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Fase 2</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-  <script src="script.js" defer></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Fase 2 — Geladeira</title>
+<!-- html5-qrcode -->
+<script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+<style>
+  :root{--p1:#6b2fb6;--p2:#9b6ef4}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:Poppins;background:linear-gradient(135deg,#f7f2ff,#f0e8ff);padding:18px;color:#270a3a}
+  .card{width:100%;max-width:520px;padding:20px;border-radius:14px;background:rgba(255,255,255,0.06);backdrop-filter:blur(6px);text-align:center;box-shadow:0 10px 30px rgba(107,47,182,0.12)}
+  h1{color:var(--p1);margin-bottom:8px}
+  p.lead{font-weight:700;margin-bottom:12px}
+  .qr-box{width:100%;height:320px;border-radius:12px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:10px}
+  .hint{background:linear-gradient(90deg,#f3e8ff,#efe6fb);padding:10px;border-radius:10px;margin-bottom:10px;font-weight:700;color:#3a0c4a}
+  .controls{display:flex;gap:10px;justify-content:center;margin-bottom:8px}
+  button{background:linear-gradient(180deg,var(--p2),var(--p1));color:#fff;border:none;padding:10px 16px;border-radius:10px;cursor:pointer;font-weight:800}
+  button.secondary{background:transparent;border:1px solid rgba(39,10,58,0.06);color:var(--p1)}
+  .manual{margin-top:8px;display:flex;gap:8px;justify-content:center}
+  input{padding:10px;border-radius:8px;border:1px solid rgba(39,10,58,0.06);width:60%}
+  /* modal */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:99}
+  .modal .box{background:#fff;padding:20px;border-radius:12px;text-align:center;max-width:420px;width:90%}
+  .box h2{color:var(--p1);margin-bottom:8px}
+</style>
 </head>
-<body data-expected="fase2" data-next="fase3.html" data-hint="Primeira missão: procure o QR Code onde o frio é o rei (geladeira).">
-  <div class="container">
-    <img class="header-img" src="https://via.placeholder.com/800x300.png?text=Fase+2" alt="Fase 2" />
+<body>
+  <div class="card">
     <h1>Fase 2</h1>
-    <p class="lead">Escaneie o QR Code para receber a próxima pista.</p>
+    <p class="lead">Escaneie o QR Code para liberar a próxima pista</p>
 
-    <div class="qr-box" id="qr-region"></div>
-    <div class="hint" id="hint-text">Pressione "Escanear" para iniciar — a dica aparecerá aqui.</div>
+    <div class="qr-box" id="qr-region">
+      <!-- vídeo/câmera aparece aqui -->
+    </div>
+
+    <div class="hint" id="hint">Primeira missão: procure o QR Code onde o frio é o rei (geladeira).</div>
 
     <div class="controls">
-      <button id="start-scan" class="btn">📷 Escanear</button>
-      <button id="stop-scan" class="btn secondary" disabled>⏹ Parar</button>
+      <button id="start-btn">📷 Escanear</button>
+      <button id="stop-btn" class="secondary" disabled>⏹ Parar</button>
     </div>
 
     <div class="manual">
-      <input id="manual-code" placeholder="Digite o código caso não consiga escanear" />
-      <button id="manual-confirm" class="btn secondary">Confirmar</button>
+      <input id="manual-input" placeholder="Digite o código (se precisar)" />
+      <button id="manual-ok" class="secondary">Confirmar</button>
     </div>
-
-    <div class="progress">Fase 2 de 10</div>
+    <div style="margin-top:10px;font-weight:700;color:rgba(39,10,58,0.7)">Fase 2 de 10</div>
   </div>
 
   <!-- modal -->
-  <div id="result-overlay" class="overlay">
+  <div id="modal" class="modal">
     <div class="box">
-      <div id="overlay-message"></div>
-      <div style="margin-top:12px;">
-        <button id="next-btn" class="btn" style="display:none">Próximo</button>
-        <button id="overlay-close" class="btn secondary">Fechar</button>
+      <h2>Você está indo bem!</h2>
+      <p>Continue, amor — já falta pouco 💜</p>
+      <div style="margin-top:12px">
+        <button id="modal-next">Próxima</button>
+        <button id="modal-close" class="secondary">Fechar</button>
       </div>
     </div>
   </div>
+
+<script>
+/* Fase 2 — código esperado: "fase2" */
+const expected = 'fase2';
+let scanner = null;
+let scanning = false;
+const startBtn = document.getElementById('start-btn');
+const stopBtn = document.getElementById('stop-btn');
+const qrRegionId = 'qr-region';
+const modal = document.getElementById('modal');
+const modalNext = document.getElementById('modal-next');
+const modalClose = document.getElementById('modal-close');
+const manualInput = document.getElementById('manual-input');
+const manualOk = document.getElementById('manual-ok');
+
+function showModal() { modal.style.display='flex'; }
+function hideModal(){ modal.style.display='none'; }
+
+startBtn.addEventListener('click', async () => {
+  if (scanning) return;
+  scanner = new Html5Qrcode(qrRegionId);
+  try {
+    const devices = await Html5Qrcode.getCameras();
+    if (!devices || devices.length===0) { alert('Nenhuma câmera detectada'); return; }
+    const cam = devices.find(d=>/back|rear|trás/i.test(d.label)) || devices[0];
+    await scanner.start(cam.id, { fps: 10, qrbox: 250 },
+      (decoded) => {
+        const text = String(decoded).trim().toLowerCase();
+        if (text === expected) {
+          stopScanner();
+          showModal();
+        } else {
+          // se quiser, mostrar feedback breve
+          console.log('QR lido (não esperado):', text);
+        }
+      },
+      (err)=>{ /* ignore small errors */ }
+    );
+    scanning = true;
+    startBtn.disabled = true;
+    stopBtn.disabled = false;
+  } catch(err) {
+    console.error(err);
+    alert('Erro ao acessar a câmera. Verifique permissões e HTTPS.');
+  }
+});
+
+stopBtn.addEventListener('click', stopScanner);
+
+function stopScanner(){
+  if (!scanning || !scanner) return;
+  scanner.stop().then(()=>{
+    scanner.clear();
+    scanning = false;
+    startBtn.disabled = false;
+    stopBtn.disabled = true;
+  }).catch(e=>{console.warn('stop error',e)});
+}
+
+modalClose.addEventListener('click', hideModal);
+modalNext.addEventListener('click', ()=> location.href='fase3.html');
+
+manualOk.addEventListener('click', ()=>{
+  const val = (manualInput.value||'').trim().toLowerCase();
+  if (!val) return alert('Digite algo');
+  if (val === expected) showModal();
+  else alert('Código incorreto, tenta de novo 💜');
+});
+</script>
 </body>
 </html>
