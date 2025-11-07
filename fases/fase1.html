@@ -14,7 +14,6 @@
         color: white;
       }
 
-
       #my-qr-reader {
         width: 400px;
         margin: 20px auto;
@@ -49,13 +48,13 @@
   </head>
   <body>
     <div id="posi">
-        <h1>📷 Procure e scaneie o QR-Code</h1>
-        <div id="my-qr-reader"></div>
-        <div>
-          <button id="start-scan">Iniciar Scanner</button>
-          <button id="stop-scan" disabled>Parar Scanner</button>
-        </div>
-        <div id="you-qr-result"></div>
+      <h1>📷 Procure e scaneie o QR-Code</h1>
+      <div id="my-qr-reader"></div>
+      <div>
+        <button id="start-scan">Iniciar Scanner</button>
+        <button id="stop-scan" disabled>Parar Scanner</button>
+      </div>
+      <div id="you-qr-result"></div>
     </div>
 
     <!-- Biblioteca -->
@@ -85,7 +84,10 @@
             { fps: 10, qrbox: { width: 250, height: 250 } },
             (decodedText) => {
               resultContainer.innerHTML = `✅ Código detectado: <b>${decodedText}</b>`;
-              stopScanner(); // para após ler o QR
+              stopScanner(); // para a câmera
+              setTimeout(() => {
+                window.location.href = decodedText; // redireciona automaticamente
+              }, 800); // pequeno atraso pra mostrar a mensagem
             }
           );
         } catch (err) {
@@ -113,4 +115,3 @@
     </script>
   </body>
 </html>
-
