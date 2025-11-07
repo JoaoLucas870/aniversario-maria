@@ -1,56 +1,41 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Fase 1</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fase 3</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- biblioteca do scanner (obrigatório) -->
   <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-  <!-- seu JS -->
   <script src="script.js" defer></script>
 </head>
-<body>
+<body data-expected="fase3" data-next="fase4.html" data-hint="Ótimo! Agora a pista está onde a gente dorme juntinhos (cama).">
   <div class="container">
-    <img src="https://via.placeholder.com/400x250.png?text=Foto+1" alt="Fase 1" />
-    <h1>Boa! Você começou a jornada 💚</h1>
-    <p id="hint-text">Dica: ...</p>
+    <img class="header-img" src="https://via.placeholder.com/800x300.png?text=Fase+3" alt="Fase 3" />
+    <h1>Fase 3</h1>
+    <p class="lead">Use a câmera para escanear o QR.</p>
 
-    <!-- área do scanner / vídeo -->
-    <div id="qr-region" style="width:100%;display:flex;justify-content:center;margin:10px 0;">
-      <!-- html5-qrcode injeta a câmera aqui -->
+    <div class="qr-box" id="qr-region"></div>
+    <div class="hint" id="hint-text"></div>
+
+    <div class="controls">
+      <button id="start-scan" class="btn">📷 Escanear</button>
+      <button id="stop-scan" class="btn secondary" disabled>⏹ Parar</button>
     </div>
 
-    <!-- controle do scanner -->
-    <div style="margin-bottom:12px;">
-      <button id="start-scan">Scanear</button>
-      <button id="stop-scan" disabled>Parar</button>
+    <div class="manual">
+      <input id="manual-code" placeholder="Digite o código caso não consiga escanear" />
+      <button id="manual-confirm" class="btn secondary">Confirmar</button>
     </div>
 
-    <!-- alternativa manual -->
-    <div style="margin-bottom:12px;">
-      <input id="manual-code" placeholder="Digite o código (se tiver)" style="padding:8px;border-radius:6px;border:1px solid #ccc;width:60%;" />
-      <button id="manual-confirm">Confirmar código</button>
-    </div>
-
-    <!-- botão próximo (escondido até validar) -->
-    <div>
-      <button id="next-btn" style="display:none;margin-top:8px;">Próximo</button>
-    </div>
+    <div class="progress">Fase 3 de 10</div>
   </div>
 
-  <!-- overlay de resultado (mensagem engraçada) -->
-  <div id="result-overlay" style="
-      display:none;
-      position:fixed;
-      left:0;top:0;right:0;bottom:0;
-      background: rgba(0,0,0,0.6);
-      justify-content:center;
-      align-items:center;
-      z-index:9999;">
-    <div style="background:#fff;padding:20px;border-radius:12px;max-width:420px;width:90%;text-align:center;">
+  <div id="result-overlay" class="overlay">
+    <div class="box">
       <div id="overlay-message"></div>
       <div style="margin-top:12px;">
-        <button id="overlay-close" style="margin-right:8px;">Fechar</button>
+        <button id="next-btn" class="btn" style="display:none">Próximo</button>
+        <button id="overlay-close" class="btn secondary">Fechar</button>
       </div>
     </div>
   </div>
