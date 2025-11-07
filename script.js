@@ -1,5 +1,3 @@
-// script.js — versão corrigida pro GitHub Pages
-
 let html5QrCode;
 let isScanning = false;
 
@@ -10,60 +8,56 @@ const hintText = document.getElementById("hint-text");
 const overlay = document.getElementById("result-overlay");
 const overlayMsg = document.getElementById("overlay-message");
 const overlayClose = document.getElementById("overlay-close");
+const manualInput = document.getElementById("manual-code");
+const manualConfirm = document.getElementById("manual-confirm");
 
-function qrCodeSuccessCallback(decodedText, decodedResult) {
+const correctCode = "fase2liberada"; // texto do QR
+
+// ✅ Quando ler o QR corretamente
+function qrCodeSuccessCallback(decodedText) {
   stopCameraScan();
 
-  // Mostra mensagem engraçada
-  overlayMsg.innerHTML = `
-    <h2>🎉 Mandou bem!</h2>
-    <p>Você achou a pista certa: <b>${decodedText}</b></p>
-    <p>Continue, o amor te guia 💚</p>
-  `;
+  if (decodedText.trim().toLowerCase() === correctCode) {
+    overlayMsg.innerHTML = `
+      <h2>💜 Mandou bem!</h2>
+      <p>Você achou a pista certa: <b>${decodedText}</b></p>
+      <p>Continue, o amor te guia 💘</p>
+    `;
+    nextBtn.style.display = "inline-block";
+  } else {
+    overlayMsg.innerHTML = `
+      <h2>❌ Ops!</h2>
+      <p>Esse código não é o certo 😅</p>
+    `;
+  }
   overlay.style.display = "flex";
-}
-
-function qrCodeErrorCallback(errorMessage) {
-  // erros de leitura (podem ser ignorados)
 }
 
 function startCameraScan() {
   if (isScanning) return;
-
   const regionElem = document.getElementById("qr-region");
-  if (!regionElem) {
-    alert("Erro interno: área do QR não encontrada.");
-    return;
-  }
-
   html5QrCode = new Html5Qrcode("qr-region");
   const config = { fps: 10, qrbox: { width: 250, height: 250 } };
 
-  Html5Qrcode.getCameras()
-    .then((devices) => {
-      if (!devices || devices.length === 0) {
-        hintText.textContent = "Nenhuma câmera detectada 😕";
-        return;
-      }
-
-      const cameraId = devices[0].id;
-      html5QrCode
-        .start(cameraId, config, qrCodeSuccessCallback, qrCodeErrorCallback)
-        .then(() => {
-          isScanning = true;
-          scanBtn.disabled = true;
-          stopBtn.disabled = false;
-          hintText.textContent = "📸 Aponte para o QR Code...";
-        })
-        .catch((err) => {
-          console.error("Erro ao iniciar câmera:", err);
-          hintText.textContent = "Erro ao acessar câmera 😔";
-        });
-    })
-    .catch((err) => {
-      console.error("Erro ao listar câmeras:", err);
-      hintText.textContent = "Não consegui acessar as câmeras.";
-    });
+  Html5Qrcode.getCameras().then((devices) => {
+    if (!devices.length) {
+      hintText.textContent = "Nenhuma câmera detectada 😕";
+      return;
+    }
+    const cameraId = devices.find((d) => /back|rear/i.test(d.label))?.id || devices[0].id;
+    html5QrCode
+      .start(cameraId, config, qrCodeSuccessCallback)
+      .then(() => {
+        isScanning = true;
+        scanBtn.disabled = true;
+        stopBtn.disabled = false;
+        hintText.textContent = "📸 Aponte para o QR Code...";
+      })
+      .catch((err) => {
+        console.error("Erro ao iniciar câmera:", err);
+        hintText.textContent = "Erro ao acessar câmera 😔";
+      });
+  });
 }
 
 function stopCameraScan() {
@@ -73,15 +67,33 @@ function stopCameraScan() {
       isScanning = false;
       scanBtn.disabled = false;
       stopBtn.disabled = true;
-      hintText.textContent = "Scanner parado.";
+      hintText.textContent = "Scanner parado 💜";
     });
   }
 }
 
-scanBtn.addEventListener("click", startCameraScan);
-stopBtn.addEventListener("click", stopCameraScan);
+manualConfirm.addEventListener("click", () => {
+  const val = manualInput.value.trim().toLowerCase();
+  if (val === correctCode) {
+    overlayMsg.innerHTML = `
+      <h2>💜 Boa!</h2>
+      <p>Código correto: <b>${val}</b></p>
+      <p>Você pode seguir para a próxima fase 💌</p>
+    `;
+    nextBtn.style.display = "inline-block";
+  } else {
+    overlayMsg.innerHTML = `<h2>❌ Errou!</h2><p>Tenta de novo 💜</p>`;
+  }
+  overlay.style.display = "flex";
+});
 
 overlayClose.addEventListener("click", () => {
   overlay.style.display = "none";
-  nextBtn.style.display = "inline-block"; // libera botão de próxima fase
 });
+
+nextBtn.addEventListener("click", () => {
+  window.location.href = "fase2.html";
+});
+
+scanBtn.addEventListener("click", startCameraScan);
+stopBtn.addEventListener("click", stopCameraScan);
