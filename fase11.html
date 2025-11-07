@@ -1,20 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Parabéns — Tesouro Encontrado!</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Parabéns — Tesouro Encontrado!</title>
+<style>
+  :root{--p1:#6b2fb6;--p2:#9b6ef4}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:Poppins;background:linear-gradient(135deg,#f7f2ff,#f0e8ff);padding:20px;color:#270a3a}
+  .card{width:100%;max-width:520px;padding:28px;border-radius:16px;background:rgba(255,255,255,0.08);backdrop-filter:blur(6px);text-align:center;box-shadow:0 12px 40px rgba(107,47,182,0.12)}
+  h1{color:var(--p1);margin-bottom:8px}
+  p.lead{font-weight:700;margin-bottom:12px}
+  .final{font-size:1.05rem;margin-top:12px;color:#3a0c4a;font-weight:800}
+  button{margin-top:16px;background:linear-gradient(180deg,var(--p2),var(--p1));color:#fff;border:none;padding:10px 18px;border-radius:10px;cursor:pointer}
+</style>
 </head>
 <body>
-  <div class="container">
-    <img class="header-img" src="https://via.placeholder.com/800x300.png?text=Tesouro" alt="Tesouro" />
+  <div class="card">
     <h1>✨ Parabéns! ✨</h1>
-    <p class="lead">Você completou a missão.</p>
-    <p class="final-note">Seu tesouro lhe aguarda na sala — vá até lá e me encontre com o presente 🎁💜</p>
-
-    <div style="margin-top:18px;">
-      <button class="btn" onclick="window.location.href='fase1.html'">Refazer missão</button>
+    <p class="lead">Você completou a missão do tesouro.</p>
+    <p class="final">Seu tesouro lhe aguarda na sala — vá até lá e me encontre com o presente 🎁💜</p>
+    <div>
+      <button onclick="location.href='fase1.html'">Refazer Missão</button>
     </div>
   </div>
 </body>
