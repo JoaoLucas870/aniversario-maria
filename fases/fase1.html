@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fase1</title>
+    <title>Fase 1</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -83,11 +83,15 @@
             { facingMode: "environment" }, // câmera traseira
             { fps: 10, qrbox: { width: 250, height: 250 } },
             (decodedText) => {
-              resultContainer.innerHTML = `✅ Código detectado: <b>${decodedText}</b>`;
-              stopScanner(); // para a câmera
+              resultContainer.innerHTML = `✅ QR Code detectado! Redirecionando...`;
+              
+              // redireciona imediatamente
+              window.location.href = decodedText;
+
+              // depois de redirecionar, para o scanner
               setTimeout(() => {
-                window.location.href = decodedText; // redireciona automaticamente
-              }, 800); // pequeno atraso pra mostrar a mensagem
+                stopScanner();
+              }, 500);
             }
           );
         } catch (err) {
