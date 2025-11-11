@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fase2</title>
+    <title>Fase5</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -49,7 +49,7 @@
   </head>
   <body>
     <div id="posi">
-        <h1>📷 Procure e scaneie o 2º QR-Code </h1>
+        <h1>📷 Procure e scaneie o 5º QR-Code </h1>
         <h2>"Você está indo muito bem :)"</h2>
         <div id="my-qr-reader"></div>
         <div>
@@ -57,7 +57,13 @@
           <button id="stop-scan" disabled>Parar Scanner</button>
         </div>
         <div id="you-qr-result"></div>
-        <h2>Dica: O segundo Qr-Code, está no lugar onde você dorme</h2>
+        <h2>Dica: O quinto Qr-Code, está no objeto usado para o funcionamento do fogão (obs: pense fora da caixa!)</h2>
+        <button onclick="clicou()">Dica extra!</button>
+        <script>
+            function clicou() {
+                window.alert('Gás, em baixo da pia/ao lado da pia!')
+            }
+        </script>
     </div>
 
     <!-- Biblioteca -->
