@@ -8,15 +8,27 @@
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      margin: 50px;
+      margin: 0;
       padding: 0;
-      background: linear-gradient(to bottom, #ff69b4, blueviolet);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Fundo com imagem + gradiente */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: 
+        linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.8)),
+        url("fases/1.svg") center/cover no-repeat;
+      z-index: -1; /* fica atrás do conteúdo */
     }
 
     h1 {
@@ -53,5 +65,3 @@
   <button onclick="window.location.href='fases/fase1.html'">Começar</button>
 </body>
 </html>
-
-
