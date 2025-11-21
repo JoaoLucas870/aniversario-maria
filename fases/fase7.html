@@ -5,20 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fase7</title>
     <style>
+
+      *, *::before, *::after { box-sizing: border-box; }
+
       body {
         font-family: Arial, sans-serif;
         text-align: center;
         margin-top: 30px;
-        background: linear-gradient(to bottom, #ff69b4, blueviolet);
+        background:
+          linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(75,0,130,0.55) 40%, rgba(0,0,0,0) 80%),
+          url('../imgs/img7.svg');
+        background-size: cover;
+        background-position: center bottom;
+        background-repeat: no-repeat;
         min-height: 100vh;
         color: white;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
       }
 
+      #my-qr-reader { width: 100%; max-width: 400px; margin: 20px auto; }
 
-      #my-qr-reader {
-        width: 400px;
-        margin: 20px auto;
-      }
+      #my-qr-reader video,
+      #my-qr-reader canvas,
+      #my-qr-reader img { max-width: 100%; height: auto; display: block; }
 
       button {
         margin: 5px;
@@ -42,9 +52,15 @@
         font-size: 18px;
       }
 
-      #posi {
-        margin: 300px 30px 300px 30px;
+      #posi { max-width: 900px; margin: 30px auto; padding: 30px 15px; }
+
+      @media (max-width: 420px) {
+        h1 { font-size: 1.1rem; }
+        h2 { font-size: 0.95rem; margin-top: 12px; }
+        button { font-size: 14px; padding: 8px 14px; }
+        #posi { padding: 20px 12px; }
       }
+      h1, h2 { text-shadow: 0 2px 6px rgba(0,0,0,0.6); }
     </style>
   </head>
   <body>
@@ -82,9 +98,12 @@
         resultContainer.innerHTML = "🔍 Escaneando...";
 
         try {
+          const boxBase = Math.min(250, window.innerWidth - 40);
+          const boxSize = Math.max(150, boxBase);
+
           await html5QrCode.start(
             { facingMode: "environment" }, // câmera traseira
-            { fps: 10, qrbox: { width: 250, height: 250 } },
+            { fps: 10, qrbox: { width: boxSize, height: boxSize } },
             (decodedText) => {
               resultContainer.innerHTML = `✅ Código detectado: <b>${decodedText}</b>`;
               stopScanner(); // para após ler o QR
